@@ -1,0 +1,60 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background:radial-gradient(#a3a1a1b4, rgb(213, 228, 84)) fixed;
+  text-align: center;
+  font-family: 'Righteous', sans-serif;
+
+}
+
+
+
+
+
+section div {
+    width: 32%;
+    float: left;
+    padding: 5px;
+    border: 10px solid rgb(211, 118, 65);
+    height: 450px;
+    text-align: center; 
+    margin-left: 10px; 
+    margin-bottom: 10px;
+}
+
+  div img {
+    width: 70%;
+    height: 80%;
+  }
+
+  main h1 {
+
+    text-align: center;
+    border: 3px dashed rgb(211, 118, 65);
+    background-color: rgb(236, 240, 200);
+    color: rgb(211, 118, 65);
+    border-radius: 10px;
+    height: 90px;
+    padding: 15px;
+  }
+
+
+  main p {
+    font-size: xx-large;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(211, 118, 65);
+
+  }
+  main ul {
+
+    text-align: center;
+    font-size: 20px;
+    color: rgb(211, 118, 65);
+    font-size: 35px;
+    float: left;
+
+  }
+
