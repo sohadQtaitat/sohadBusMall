@@ -5,7 +5,7 @@ function Products(title, src) {
   this.title = title;
   this.src = src;
   this.clickCtr = 0;
-  this.ShowCtr = 0;
+  this.shownCtr = 0;
   Products.all.push(this);
 }
 
@@ -14,11 +14,14 @@ Products.maxLimit = 25;
 Products.all = [];
 
 
+
 Products.container = document.getElementById('productForm');
 
 Products.leftImage = document.getElementById('left-product-image');
 Products.centerImage = document.getElementById('center-product-image');
 Products.rightImage = document.getElementById('right-product-image');
+
+
 Products.leftTitle = document.getElementById('left-product-title');
 Products.centerTitle = document.getElementById('center-product-title');
 Products.rightTitle = document.getElementById('right-product-title');
@@ -52,36 +55,44 @@ new Products('water-can product', 'img/water-can.jpg');
 new Products('wine-glass product', 'img/wine-glass.jpg');
 
 
-
 function renderNewProducts() {
 
   var forbidden = [Products.leftObject, Products.centerObject, Products.rightObject];
+
   do {
+
     Products.leftObject = getRandomProduct();
+
   } while (forbidden.includes(Products.leftObject))
   forbidden.push(Products.leftObject);
   do {
+
     Products.centerObject = getRandomProduct();
+
   } while (forbidden.includes(Products.centerObject));
   forbidden.push(Products.centerObject);
   do {
+
     Products.rightObject = getRandomProduct();
   } while (forbidden.includes(Products.rightObject));
 
-  Products.leftObject.ShowCtr++;
-  Products.centerObject.ShowCtr++;
-  Products.rightObject.ShowCtr++;
+  Products.leftObject.shownCtr++;                                        
+  Products.centerObject.shownCtr++;
+  Products.rightObject.shownCtr++;
+
 
   var leftProductImageElement = Products.leftImage;
   var centerProductImageElement = Products.centerImage;
   var rightProductImageElement = Products.rightImage;
 
 
-  leftProductImageElement.setAttribute('src', Products.leftObject.src);
+  leftProductImageElement.setAttribute('src', Products.leftObject.src);          
   leftProductImageElement.setAttribute('alt', Products.leftObject.title);
-  centerProductImageElement.setAttribute('src', Products.centerObject.src);
+
+  centerProductImageElement.setAttribute('src', Products.centerObject.src);         
   centerProductImageElement.setAttribute('alt', Products.centerObject.title);
-  rightProductImageElement.setAttribute('src', Products.rightObject.src);
+
+  rightProductImageElement.setAttribute('src', Products.rightObject.src);          
   rightProductImageElement.setAttribute('alt', Products.rightObject.title);
 
 
@@ -89,12 +100,18 @@ function renderNewProducts() {
   Products.centerTitle.textContent = Products.centerObject.title
   Products.rightTitle.textContent = Products.rightObject.title;
 
-}
+}  
+
+
+
+
+
 function getRandomProduct() {
   var index = Math.floor(Math.random() * Products.all.length);
   console.log('index', index);
   return Products.all[index];
 }
+
 
 
 function updateTotals() {
@@ -107,7 +124,11 @@ function updateTotals() {
     var newProduct = Products.all[i];
     var output = addElement('output', alloutput);
     addElement('li', output, newProduct.title + ' Votes >>> ' + newProduct.clickCtr + ' ||   Shown >>>' + newProduct.ShowCtr + ' times');
-  }}
+  }
+} 
+
+
+
 function addElement(tag, container, text) {
 
   var element = document.createElement(tag);
@@ -118,6 +139,8 @@ function addElement(tag, container, text) {
   return element;
 
 }
+
+
 function clickHandler(event) {
 
   var clickItemId = event.target.id;
@@ -128,24 +151,107 @@ function clickHandler(event) {
   } else if (clickItemId === 'center-product-image') {
     productChlicked = Products.centerObject;
   } else if (clickItemId === 'right-product-image') {
-    productChlicked = Products.rightObject;}
+    productChlicked = Products.rightObject;
+
+  }
 
   if (productChlicked) {
     productChlicked.clickCtr++;
     Products.initialCounter++;
 
+    updateTotals();
 
     if (Products.initialCounter === Products.maxLimit) {
 
       alert('Your fight ended up unfortunately');
-      updateTotals();
+      fullChart();
+
       Products.container.removeEventListener('click', clickHandler);
-    } else 
-    {
+
+    } else {
+
       renderNewProducts();
-    }
-  }}
+    } } } 
 
 Products.container.addEventListener('click', clickHandler);
 
+updateTotals();
+
 renderNewProducts();
+
+
+
+var chartDrawn = document.getElementById('chartDraw').getContext('2d');
+
+
+var productstitles = [];
+var productsSeen = [];
+var productsClicks = [];
+
+
+function makeProducttitle() {
+
+  for (var i = 0; i < Products.all.length; i++) {         
+    var producttitle = Products.all[i].title;
+    productstitles.push(producttitle);
+    console.log('productstitles', productstitles);
+  }
+
+  return productstitles;
+
+}
+
+function makeProductseen() {
+
+  for (var i = 0; i < Products.all.length; i++) {
+    var productSeen = Products.all[i];
+    productsSeen.push(productSeen.shownCtr);
+    console.log('productsSeen', productsSeen);
+  }
+
+  return productsSeen;
+}
+
+function makeProductclick() {
+
+  for (var i = 0; i < Products.all.length; i++) {
+    var productClick = Products.all[i];
+    productsClicks.push(productClick.clickCtr);
+    console.log('productsClicks', productsClicks);
+  }
+
+  return productsClicks;
+
+}
+
+
+function fullChart()
+{
+
+  console.log('Chart : ', Chart);
+  var chart = new Chart(chartDrawn, {
+    type: 'bar',
+  
+    
+    data: {
+      labels: makeProducttitle(),
+      datasets: [
+        {
+          label: 'Clicked Product ',
+          backgroundColor: 'rgb(213, 228, 84)',
+          borderColor: 'rgb(213, 228, 84)',
+          data: makeProductclick()
+        }, 
+{         label: ' shown Product  ',
+          backgroundColor: 'rgb(211, 118, 65)',
+          borderColor: ' rgb(211, 118, 65)',
+          data: makeProductseen(), 
+         
+        }            ]
+        
+        
+    },
+    options: {}
+  });
+
+}
