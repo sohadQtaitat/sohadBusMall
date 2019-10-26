@@ -10,15 +10,11 @@ body {
 
 }
 
-
-
-
-
 section div {
     width: 32%;
     float: left;
     padding: 5px;
-    border: 10px solid rgb(211, 118, 65);
+    border: 3px dashed rgb(211, 118, 65);
     height: 450px;
     text-align: center; 
     margin-left: 10px; 
@@ -51,7 +47,7 @@ section div {
   main ul {
 
     text-align: center;
-    font-size: 20px;
+    font-size: 10px;
     color: rgb(211, 118, 65);
     font-size: 35px;
     float: left;
